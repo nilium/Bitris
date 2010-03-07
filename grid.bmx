@@ -1,7 +1,8 @@
 
 SuperStrict
 
-Import joe.colour
+Import "color.bmx"
+Import brl.Max2D
 Import brl.random
 Import "settings.bmx"
 
@@ -11,11 +12,11 @@ Type btGrid
 	Field _w:Int
 	Field _h:Int
 	
-	Field _colEmpty:TColour = TColour.Silver()
-	Field _colFilled:TColour = TColour.Orange()
-	Field _colSelected:TColour = TColour.Lime()
-	Field _colImpossible:TColour = TColour.Red()
-	Field _colLines:TColour = TColour.Black()
+	Field _colEmpty:TColor = TColor.Silver()
+	Field _colFilled:TColor = TColor.Orange()
+	Field _colSelected:TColor = TColor.Lime()
+	Field _colImpossible:TColor = TColor.Red()
+	Field _colLines:TColor = TColor.Black()
 	
 	Rem
 	bbdoc: Initialises the grid
@@ -318,7 +319,7 @@ Type btGrid
 				DrawRect(x + xx * blockw + 1, y + yy * blockh + 1, blockw - 2, blockh - 2)
 				
 				If (_effects)
-					TColour.White(0.4).Set()
+					TColor.White(0.4).Set()
 					DrawOval(x + xx * blockw - (blockw / 3.0), y + yy * blockh - (blockh / 2.0), blockw * (5.0 / 3.0), blockh)
 				EndIf
 				EndRem
@@ -362,7 +363,7 @@ Type btGrid
 		DrawRect(x + 1, y + 1, w - 2, h - 2)
 		
 		If (btSettings.Glass)
-			TColour.White(0.4).Set()
+			TColor.White(0.4).Set()
 			DrawOval(x - (w / 3.0), y - (h / 2.0), w * (5.0 / 3.0), h)
 		EndIf
 		

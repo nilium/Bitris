@@ -1,4 +1,5 @@
-
+'buildopt:gui
+'buildopt:release
 SuperStrict
 
 Framework brl.blitz
