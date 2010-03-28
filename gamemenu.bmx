@@ -22,9 +22,11 @@ Type btMenuState Extends btState
 		_Menu.SetPosition(30 * scale, 40 * scale)
 		_Menu.SetSpacing(20 * scale)
 		_Menu.AddItem("Single-player Standard")
+		_Menu.AddItem("Single-player Survival")
 		_Menu.AddItem("Single-player Custom")
 		_Menu.AddItem("Hotseat")
 		_Menu.AddItem("Settings")
+		_Menu.AddItem("")
 		_Menu.AddItem("Exit")
 		
 		_Settings = New btMenu
@@ -42,6 +44,11 @@ Type btMenuState Extends btState
 		_Settings.AddItem("Pieces: " + btSettings.Moves)
 		_Settings.AddItem("Grid width: " + btSettings.GameWidth)
 		_Settings.AddItem("Grid height: " + btSettings.GameHeight)
+		If btSettings.Skips = -1
+			_Settings.AddItem("Skips: Infinate")
+		Else
+			_Settings.AddItem("Skips: " + btSettings.Skips)
+		EndIf
 		If btSettings.Seed = 0
 			_Settings.AddItem("Random Seed: Random")
 		Else
@@ -72,20 +79,29 @@ Type btMenuState Extends btState
 			If Button = MOUSE_LEFT
 				Select index
 					Case 0
-						CurrentState = New btStandardGame.Init(btSettings.Height)
+						Local g:btGame = New btStandardGame.Init("Standard game", 5, 5)
+						g.SetSkipLimit(- 1)
+						g.SetTurnsLimit(35)
+						CurrentState = g
 						Leave()
 					Case 1
-						CurrentState = New btStandardGame.Init(btSettings.Height, btSettings.GameWidth, btSettings.GameHeight, btSettings.Movetime, btSettings.Moves, btSettings.seed)
+						Local g:btGame = New btStandardGame.Init("Survival game", 5, 5)
+						g.SetSkipLimit(0)
+						g.SetTurnsLimit(- 1)
+						CurrentState = g
 						Leave()
-					Case 2	
+					Case 2
+						CurrentState = New btStandardGame.Init("Custom game", btSettings.GameWidth, btSettings.GameHeight, 1, btSettings.Seed)
 						Leave()
-						'DebugStop
-						CurrentState = New btHotseatGame.Init(btSettings.Height, btSettings.GameWidth, btSettings.GameHeight, btSettings.Movetime, - 1)
-						
 					Case 3
+						Leave()
+						Local g:btGame = New btHotseatGame.Init("Hotseat game", btSettings.GameWidth, btSettings.GameHeight, 2, btSettings.Seed)
+						g.SetTurnsLimit(btSettings.Moves * 2)
+						CurrentState = g
+					Case 4
 						_Menu.Disable()
 						_Settings.Enable()
-					Case 4
+					Case 6
 						End
 				End Select
 			EndIf
@@ -131,6 +147,17 @@ Type btMenuState Extends btState
 					End If
 					_Settings.ChangeItem(4, "Grid height: " + Int(btSettings.GameHeight))
 				Case 5
+					If Button = MOUSE_LEFT
+						btSettings.SetSkips(btSettings.Skips + 1)
+					ElseIf Button = MOUSE_RIGHT
+						btSettings.SetSkips(btSettings.Skips - 1)
+					End If
+					If btSettings.Skips = -1
+						_Settings.ChangeItem(5, "Skips: Infinate")
+					Else
+						_Settings.ChangeItem(5, "Skips: " + btSettings.Skips)
+					EndIf					
+				Case 6
 					Local seed:Int
 					If Button = MOUSE_LEFT
 						seed = btSettings.SetSeed(btSettings.Seed + 1)
@@ -138,11 +165,11 @@ Type btMenuState Extends btState
 						seed = btSettings.SetSeed(Max(btSettings.Seed - 1, 0))
 					End If
 					If seed = 0
-						_Settings.ChangeItem(5, "Random Seed: Random")
+						_Settings.ChangeItem(6, "Random Seed: Random")
 					Else
-						_Settings.ChangeItem(5, "Random Seed: " + btSettings.Seed)
+						_Settings.ChangeItem(6, "Random Seed: " + btSettings.Seed)
 					EndIf
-				Case 7
+				Case 8
 					If Button = MOUSE_LEFT
 						_Settings.Disable()
 						_Menu.Enable()
@@ -162,6 +189,11 @@ Type btMenuState Extends btState
 		SetScale(1, 1)
 		If _Menu.IsEnabled() _Menu.Render()
 		If _Settings.IsEnabled() _Settings.Render()
+		SetColor(200, 200, 200)
+		SetScale(0.5, 0.5)
+		DrawText("Quadris is a Clone of Bitris (by Katharine Berry)", 10, btSettings.Height - 38)
+		DrawText("   Programmed by Joseph Atkins-Turkish", 10, btSettings.Height - 22)
+		SetScale(1, 1)
 	End Method
 	
 End Type

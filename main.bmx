@@ -11,7 +11,7 @@ Import "settings.bmx"
 
 Incbin "DroidSans-Bold.ttf"
 
-AppTitle = "Bitris"
+AppTitle = "Quadris"
 
 btSettings.Load()
 
