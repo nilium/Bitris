@@ -9,7 +9,7 @@ Import "gamemenu.bmx"
 Import "game.bmx"
 Import "settings.bmx"
 
-Incbin "ARLRDBD.TTF"
+Incbin "DroidSans-Bold.ttf"
 
 AppTitle = "Bitris"
 

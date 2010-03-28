@@ -51,7 +51,7 @@ Type btMenuState Extends btState
 		_Settings.AddItem("Return to main menu")
 		
 		
-		_Font = LoadImageFont("incbin::ARLRDBD.TTF", Int(22 * scale))
+		_Font = LoadImageFont("incbin::DroidSans-Bold.ttf", Int(22 * scale))
 		
 		Return Self
 	End Method
